@@ -43,9 +43,7 @@ function geojson(params) {
 
   function  addHeatMapLayer() {
       heatMapLayer = L.supermap.heatMapLayer(
-        "heatMap",
-         
-        
+        "heatMap", 
         //  ["blue", "cyan", "lime", "yellow", "white"],
         
           {

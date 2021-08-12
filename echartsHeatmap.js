@@ -63,6 +63,6 @@ class HeatMap {
   }
 }
 let tp_HeatMAP = new HeatMap();
-setTimeout(() => {
-  // tp_HeatMAP.addHeatMapLayer();
-}, 3000);
+// setTimeout(() => {
+//   // tp_HeatMAP.addHeatMapLayer();
+// }, 3000);
