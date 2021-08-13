@@ -86,7 +86,6 @@ function layerRemove(params) {
     resultLayer.remove();
   }
   if (tp_HeatMAP.heatMapLayer != null) {
-    console.log(true);
     // tp_HeatMAP.heatMapLayer.remove()
     // console.log(tp_HeatMAP.heatMapLayer);
     tp_HeatMAP.heatMapLayer.remove();
@@ -99,6 +98,7 @@ function layerRemove(params) {
   if(tp_isogram.isogramlayer!=null)
   {
     console.log(true);
+    tp_isogram.isogramlayer.remove();
   }
 }
 
