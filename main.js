@@ -142,9 +142,10 @@ function sqlResult(serviceResult) {
 
     coordsToLatLng: function (coords) {
       // console.log(L.point(coords[0], coords[1]));
-      let latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+      // FIXME: 3857坐标系单位为米 (数值较大) 4326坐标系单位为度 (经纬度坐标)
+      let latlng = L.CRS.EPSG4326.unproject(L.point(coords[0], coords[1]));
       latlng.alt = coords[2];
-        // console.log(latlng);
+        console.log(latlng);
       return latlng;
     },
   });
@@ -170,13 +171,8 @@ function sqlQuery(attributeFilter, datasetNames = [],toIndex=238) {
   L.supermap.featureService(dataurl).getFeaturesBySQL(sqlParam, sqlResult);
 }
 
-
 // 默认展示第一天的天气信息地图
-
 sqlQuery(gnl_infor_date, ["ChinaClimate:weather"])
-
-// 热力图
-// gn_search.addEventListener("click",addHeatMapLayer)
 
 gnl_search.addEventListener('click', () => {
   layerRemove();
@@ -194,7 +190,7 @@ day_tp_heat_search.addEventListener('click',()=>{
   tp_HeatMAP.addHeatMapLayer();
   tp_HeatMAP.heatMapLayer.addTo(map);
   tp_HeatMAP.markerGroup.addTo(map); 
-  console.log( tp_HeatMAP.heatMapLayer);
+  console.log(tp_HeatMAP.heatMapLayer);
 })
 
 // let layer=L.layerGroup(heatMapLayer)

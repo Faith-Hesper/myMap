@@ -15,7 +15,7 @@ class HeatMap {
       opacity: 0.8,
       featureWeight: "value",
       loadWhileAnimating: false,
-      // colors: ["rgb(0,0,255)", "rgb(0,255,255)", "rgb(0,255,0)", "yellow", "rgb(255,0,0)"],
+      colors: ["rgb(0,0,255)", "rgb(0,255,255)", "rgb(0,255,0)", "yellow", "rgb(255,0,0)"]
     });
     this.geojsonParse();
     // console.log(cityData.get("北京市"));
@@ -25,24 +25,26 @@ class HeatMap {
   geojsonParse(params) {
     let markers = [];
     let geojson = {
-      type: "FeatureCollection",
-      features: [],
+      "type": "FeatureCollection",
+      "features": [],
     };
     let index = timeTransfer(tp_heat_infor_date);
     for (const [key, value] of cityData) {
       // console.log(value.lng,value.lat);
       let feature = {
-        type: "feature",
-        geometry: {
-          type: "Point",
-          coordinates: [],
+        "type": "feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [],
         },
-        properties: {
-          value: parseFloat(value.TEMPERATURE[index]),
+        "properties": {
+          "value": parseFloat(value.TEMPERATURE[index]),
         },
       };
       // let latlng = L.CRS.EPSG4326.latLngToPoint(L.latLng(value.lng, value.lat));
       // console.log(latlng);
+      /* fixme: 热力图 marker X为经度 Y为维度
+      */
       feature.geometry.coordinates = [parseFloat(value.lng), parseFloat(value.lat)];
       console.log(key,feature.geometry.coordinates,value.TEMPERATURE[index]);
       let latlng = [value.lat, value.lng];

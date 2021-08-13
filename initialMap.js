@@ -1,23 +1,17 @@
 const host = window.isLocal ? window.server : "https://iserver.supermap.io";
-let map,
-  chinaMapLayer,
-  heatMapLayer,
-  resultLayer,
-  // isogramlayer,
-  surfaceAnalystService,
-  surfaceAnalystParameters,
-  serviceUrl =
+let map, chinaMapLayer,  resultLayer, surfaceAnalystService, surfaceAnalystParameters;
+// isogramlayer,heatMapLayer,
+let serviceUrl =
     "http://localhost:8090" + "/iserver/services/spatialAnalysis-China-3/restjsr/spatialanalyst";
   baseUrl = "http://localhost:8090" + "/iserver/services/map-China/rest/maps/China",
   // baseurl = host + "/iserver/services/map-world/rest/maps/世界地图_Gray",
   dataurl = "http://localhost:8090" + "/iserver/services/data-China/rest/data",
   url = "http://localhost:8090" + "/iserver/services/map-china400/rest/maps/China";
-  let myMap = [];
-  let marker;
+let myMap = [];
   // 各个城市每日天气信息
-  let cityData = new Map();
+let cityData = new Map();
 // map = L.map("map", {
-//   crs: L.CRS.EPSG4326,
+//   crs: L.CRS.EPSG3857,
 //   center: [116, 60],
 //   zoomSnap: 0.4,
 //   zoomDelta: 0.4,
@@ -26,8 +20,9 @@ let map,
 //   zoom: 2,
 //   preferCanvas: true,
 // });
+// fixme: L.Proj.CRS("EPSG:3857"
 map = L.map("map", {
-  crs: L.Proj.CRS("EPSG:3857",{
+  crs: L.CRS.NonEarthCRS({
     bounds: L.bounds([-20037508.34 , -20037508.34], [20037508.34, 18418382.33]),
     origin: L.point(-20037508.34, 18418382.33),
   }),
@@ -39,9 +34,9 @@ map = L.map("map", {
   zoom: 4,
   preferCanvas: true,
 });
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(map);
 
 // 地图加载
 chinaMapLayer = L.supermap
@@ -86,10 +81,29 @@ function timeTransfer(time) {
 }
 
 
+function layerRemove(params) {
+  if (resultLayer != null) {
+    resultLayer.remove();
+  }
+  if (tp_HeatMAP.heatMapLayer != null) {
+    console.log(true);
+    // tp_HeatMAP.heatMapLayer.remove()
+    // console.log(tp_HeatMAP.heatMapLayer);
+    tp_HeatMAP.heatMapLayer.remove();
+    tp_HeatMAP.markerGroup.remove();
+  }
+  if(rain_isogram.isogramlayer!=null)
+  {
+    rain_isogram.isogramlayer.remove();
+  }
+  if(tp_isogram.isogramlayer!=null)
+  {
+    console.log(true);
+  }
+}
+
 // 整理SQL查询到的数据
 function getData(myMap) {
-  // let dt = [];
-
   // 临时存储对象
   function tmpObj(AQI, HUMIDITY, RAINFALL, WEATHER, TEMPERATURE, PM25, DATE_USER, lat, lng) {
     this.AQI = AQI;
@@ -102,7 +116,7 @@ function getData(myMap) {
     this.lat = lat;
     this.lng = lng;
   }
-  // 、、、、
+  // 
 
   for (let index = 0; index < myMap.length / 7; index++) {
     let tmp = myMap[index].NAME;
@@ -125,7 +139,6 @@ function getData(myMap) {
         PM25.push(myMap[temp].weaher.PM25);
         DATE_USER.push(myMap[temp].weaher.DATE_USER);
         // dt.push(myMap[temp])
-
         // console.log(myMap[temp].NAME);
       }
     }
@@ -169,7 +182,7 @@ function sql1Result(serviceResult) {
   /*geoJSON数据解析*/
   L.geoJSON(serviceResult.result.features, {
     onEachFeature: (feature, layer) => {
-      let latlng = L.CRS.EPSG3857.unproject(
+      let latlng = L.CRS.EPSG4326.unproject(
         L.point(feature.geometry.coordinates[0], feature.geometry.coordinates[1])
       );
       // console.table(latlng.lat,latlng.lng);
@@ -222,6 +235,8 @@ sql1Query(["ChinaClimate:weather"]);
 //   // console.log(myMap);
 //   // console.log(cityData);
 // }, 2000);
+
+// 时间选择框
 function initDate(params) {
   info = L.control({ position: "topleft" });
   info.onAdd = function (params) {
@@ -287,23 +302,3 @@ function initDate(params) {
   info.addTo(map);
 }
 initDate();
-function layerRemove(params) {
-  if (resultLayer != null) {
-    resultLayer.remove();
-  }
-  if (tp_HeatMAP.heatMapLayer != null) {
-    console.log(true);
-    // tp_HeatMAP.heatMapLayer.remove()
-    // console.log(tp_HeatMAP.heatMapLayer);
-    tp_HeatMAP.heatMapLayer.remove();
-    tp_HeatMAP.markerGroup.remove();
-  }
-  if(rain_isogram.isogramlayer!=null)
-  {
-    rain_isogram.isogramlayer.remove();
-  }
-  if(tp_isogram.isogramlayer!=null)
-  {
-    console.log(true);
-  }
-}
