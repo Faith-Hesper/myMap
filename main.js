@@ -190,7 +190,7 @@ day_tp_heat_search.addEventListener('click',()=>{
   tp_HeatMAP.addHeatMapLayer();
   tp_HeatMAP.heatMapLayer.addTo(map);
   tp_HeatMAP.markerGroup.addTo(map); 
-  console.log(tp_HeatMAP.heatMapLayer);
+  console.log(tp_HeatMAP);
 })
 
 // let layer=L.layerGroup(heatMapLayer)

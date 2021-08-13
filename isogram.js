@@ -1,6 +1,6 @@
 // 等值线类
 class Isogram {
-  constructor(layername) {
+  constructor() {
     this.isogramlayer;
     // this.surfaceAnalystProcess;
   }
@@ -33,14 +33,13 @@ class Isogram {
     surfaceAnalystService = L.supermap.spatialAnalystService(serviceUrl);
     // 表面分析
     surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (serviceResult) {
-      var result = serviceResult.result;
+      let result = serviceResult.result;
       console.log(result);
       if (result && result.recordset && result.recordset.features) {
         this.isogramlayer = L.geoJSON(result.recordset.features, {
           weight: 3,
           style: (feature) => {
             console.log(feature.properties.dZvalue);
-
             if (feature.properties.dZvalue > 0 && feature.properties.dZvalue < 10) {
               L.polyline(feature.geometry.coordinates, {
                 color: "#7879b0",
@@ -71,9 +70,9 @@ class Isogram {
                 color: "#7879b0",
               };
             }
-            // return true;
           },
-        }).addTo(map);
+        })
+          // .addTo(map);
       } else {
         alert("图层未加载成功，请刷新重试");
       }
@@ -89,13 +88,14 @@ tp_isogram = new Isogram();
 day_rain_isogram_search.addEventListener("click", () => {
   layerRemove();
   rain_isogram.surfaceAnalystProcess("rainfall", rain_isogram_infor_date);
-  // surfaceAnalystProcess("temperature");
 });
 
 day_tp_isogram_search.addEventListener("click", () => {
   layerRemove();
   tp_isogram.surfaceAnalystProcess("temperature", tp_isogram_infor_date);
   setTimeout(() => {
+    // tp_isogram.isogramlayer.addTo(map);
     console.log(tp_isogram);
+    
   }, 5000);
 });

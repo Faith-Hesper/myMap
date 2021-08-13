@@ -185,7 +185,7 @@ function sql1Result(serviceResult) {
       let latlng = L.CRS.EPSG4326.unproject(
         L.point(feature.geometry.coordinates[0], feature.geometry.coordinates[1])
       );
-      // console.table(latlng.lat,latlng.lng);
+      console.table(latlng.lat,latlng.lng);
       myMap[i] = new sqlData(
         feature.properties.NAME,
         feature.properties.AQI,

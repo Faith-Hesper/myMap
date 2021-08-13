@@ -10,7 +10,7 @@ class HeatMap {
       id: "heatmap",
       map: map,
       radius: 45,
-      alwaysMapCRS:false,
+      alwaysMapCRS:true,
       // useGeoUnit:true,
       opacity: 0.8,
       featureWeight: "value",
@@ -57,6 +57,7 @@ class HeatMap {
       日期：${tp_heat_infor_date}`
         )
       );
+      console.log(markers);
       geojson.features.push(feature);
     }
     this.markerGroup = L.layerGroup(markers);
