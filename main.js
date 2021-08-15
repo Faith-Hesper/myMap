@@ -87,7 +87,7 @@ function resultBind(resultLayer,selecTime) {
       let city = layer.feature.properties.NAME;
       // let time=layer.feature.properties.DATE_USER;
       time=timeTransfer(selecTime);
-      console.log(selecTime); //time
+      // console.log(selecTime); //time
       // let data1 = cityData.get(city).HUMIDITY;
       // let data2 = cityData.get(city).RAINFALL;
       return `<b>城市:</b>${city}<br>
@@ -143,7 +143,7 @@ function sqlResult(serviceResult) {
     coordsToLatLng: function (coords) {
       // console.log(L.point(coords[0], coords[1]));
       // FIXME: 3857坐标系单位为米 (数值较大) 4326坐标系单位为度 (经纬度坐标)
-      let latlng = L.CRS.EPSG4326.unproject(L.point(coords[0], coords[1]));
+      let latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
       latlng.alt = coords[2];
         console.log(latlng);
       return latlng;
@@ -190,8 +190,22 @@ day_tp_heat_search.addEventListener('click',()=>{
   tp_HeatMAP.addHeatMapLayer();
   tp_HeatMAP.heatMapLayer.addTo(map);
   tp_HeatMAP.markerGroup.addTo(map); 
-  console.log(tp_HeatMAP);
+  // console.log(tp_HeatMAP);
 })
+
+day_rain_isogram_search.addEventListener("click", () => {
+  layerRemove();
+  rain_isogram.surfaceAnalystProcess("rainfall", rain_isogram_infor_date);
+});
+
+day_tp_isogram_search.addEventListener("click", () => {
+  layerRemove();
+  tp_isogram.surfaceAnalystProcess("temperature", tp_isogram_infor_date);
+  setTimeout(() => {
+    // tp_isogram.isogramlayer.addTo(map);
+    console.log(tp_isogram);
+  }, 5000);
+});
 
 // let layer=L.layerGroup(heatMapLayer)
 // let baseMap = {

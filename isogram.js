@@ -20,7 +20,7 @@ class Isogram {
         resampleTolerance: 0, // 采样容限
         smoothMethod: SuperMap.SmoothMethod.BSPLINE,
         smoothness: 3,
-        clipRegion: region,
+        // clipRegion: region,
       }),
       dataset: "weather@ChinaClimate",
       resolution: 9000, // 分辨率
@@ -38,14 +38,26 @@ class Isogram {
       if (result && result.recordset && result.recordset.features) {
         this.isogramlayer = L.geoJSON(result.recordset.features, {
           weight: 3,
+          // onEachFeature: (feature, layer) => {
+          //   // console.log(L.point(coords[0], coords[1]));
+          //   // FIXME: 3857坐标系单位为米 (数值较大) 4326坐标系单位为度 (经纬度坐标)
+          //   let latlng = L.Util.transform(feature.geometry.coordinates, L.CRS.EPSG3857, L.CRS.EPSG4326);
+          //   // latlng.alt = coords[2];
+          //     console.log(latlng);
+          //   // return latlng;
+          // },
           style: (feature) => {
-            console.log(feature.properties.dZvalue);
+            // console.log(feature.properties.dZvalue);
             if (feature.properties.dZvalue > 0 && feature.properties.dZvalue < 10) {
-              L.polyline(feature.geometry.coordinates, {
+              
+              let p =L.polyline(feature.geometry.coordinates, {
                 color: "#7879b0",
               })
-                .bindPopup(feature.properties.dZvalue)
-                .addTo(map);
+              // .bindPopup(feature.properties.dZvalue)
+              // .addTo(map);
+              let t = L.Util.transform(p, L.CRS.EPSG3857, L.CRS.EPSG4326);
+              L.geoJSON(t).addTo(map)
+              console.log(t);
               return {
                 color: "#f1e0ab",
               };
@@ -72,7 +84,7 @@ class Isogram {
             }
           },
         })
-          // .addTo(map);
+          .addTo(map);
       } else {
         alert("图层未加载成功，请刷新重试");
       }
@@ -85,17 +97,4 @@ tp_isogram = new Isogram();
 
 // surfaceAnalystProcess("temperature");
 
-day_rain_isogram_search.addEventListener("click", () => {
-  layerRemove();
-  rain_isogram.surfaceAnalystProcess("rainfall", rain_isogram_infor_date);
-});
 
-day_tp_isogram_search.addEventListener("click", () => {
-  layerRemove();
-  tp_isogram.surfaceAnalystProcess("temperature", tp_isogram_infor_date);
-  setTimeout(() => {
-    // tp_isogram.isogramlayer.addTo(map);
-    console.log(tp_isogram);
-    
-  }, 5000);
-});

@@ -19,29 +19,25 @@ let day_tp_isogram_search = document.getElementById("day_tp_isogram_search");
 let tp_isogram_infor_date = "2021/4/30";
 
 function init_dateselect(params) {}
-// console.log(selectdate);
+
 function gnl_infor_time(params) {
   let index = wt_dateselect.selectedIndex;
   gnl_infor_date = wt_dateselect.options[index].value;
-  // console.log(gnl_infor_date);
 }
 
 function tp_heat_infor_time(params) {
   let index = tp_heat_dateselect.selectedIndex;
   tp_heat_infor_date = tp_heat_dateselect.options[index].value;
-  // console.log(tp_heat_infor_date);
 }
 
 function rain_isogram_infor_time(params) {
   let index = rain_isogram_dateselect.selectedIndex;
   rain_isogram_infor_date = rain_isogram_dateselect.options[index].value;
-  // console.log(rain_isogram_infor_date);
 }
 
 function tp_isogram_infor_time(params) {
   let index = tp_isogram_dateselect.selectedIndex;
   tp_isogram_infor_date = tp_isogram_dateselect.options[index].value;
-  // console.log(tp_isogram_infor_date);
 }
 
 wt_dateselect.addEventListener("click", gnl_infor_time);

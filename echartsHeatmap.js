@@ -10,7 +10,7 @@ class HeatMap {
       id: "heatmap",
       map: map,
       radius: 45,
-      alwaysMapCRS:true,
+      alwaysMapCRS:false,
       // useGeoUnit:true,
       opacity: 0.8,
       featureWeight: "value",
@@ -48,7 +48,7 @@ class HeatMap {
       feature.geometry.coordinates = [parseFloat(value.lng), parseFloat(value.lat)];
       console.log(key,feature.geometry.coordinates,value.TEMPERATURE[index]);
       let latlng = [value.lat, value.lng];
-      console.log(latlng);
+      // console.log(latlng);
       markers.push(
         L.marker(latlng).bindPopup(
           `
@@ -57,7 +57,7 @@ class HeatMap {
       日期：${tp_heat_infor_date}`
         )
       );
-      console.log(markers);
+
       geojson.features.push(feature);
     }
     this.markerGroup = L.layerGroup(markers);

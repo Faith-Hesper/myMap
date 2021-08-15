@@ -10,33 +10,37 @@ let serviceUrl =
 let myMap = [];
   // 各个城市每日天气信息
 let cityData = new Map();
-// map = L.map("map", {
-//   crs: L.CRS.EPSG3857,
-//   center: [116, 60],
-//   zoomSnap: 0.4,
-//   zoomDelta: 0.4,
-//   // maxZoom: 10,
-//   // minZoom: 2,
-//   zoom: 2,
-//   preferCanvas: true,
-// });
-// fixme: L.Proj.CRS("EPSG:3857"
 map = L.map("map", {
-  crs: L.CRS.NonEarthCRS({
-    bounds: L.bounds([-20037508.34 , -20037508.34], [20037508.34, 18418382.33]),
-    origin: L.point(-20037508.34, 18418382.33),
-  }),
-  center: [4204077.121, 12289903.813],
+  crs: L.CRS.EPSG3857,
+  center: [116, 60],
   zoomSnap: 0.4,
   zoomDelta: 0.4,
-  maxZoom: 10,
-  minZoom: 2,
-  zoom: 4,
+  // maxZoom: 10,
+  // minZoom: 2,
+  zoom: 2,
   preferCanvas: true,
 });
-// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// }).addTo(map);
+
+/*note: 软件
+ */
+// fixme: L.Proj.CRS("EPSG:3857"
+// map = L.map("map", {
+//   crs: L.CRS.NonEarthCRS({
+//     bounds: L.bounds([-20037508.34 , -20037508.34], [20037508.34, 18418382.33]),
+//     origin: L.point(-20037508.34, 18418382.33),
+//   }),
+//   center: [4204077.121, 12289903.813],
+//   zoomSnap: 0.4,
+//   zoomDelta: 0.4,
+//   maxZoom: 10,
+//   minZoom: 2,
+//   zoom: 4,
+//   preferCanvas: true,
+// });
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
 // 地图加载
 chinaMapLayer = L.supermap
@@ -182,10 +186,10 @@ function sql1Result(serviceResult) {
   /*geoJSON数据解析*/
   L.geoJSON(serviceResult.result.features, {
     onEachFeature: (feature, layer) => {
-      let latlng = L.CRS.EPSG4326.unproject(
+      let latlng = L.CRS.EPSG3857.unproject(
         L.point(feature.geometry.coordinates[0], feature.geometry.coordinates[1])
       );
-      console.table(latlng.lat,latlng.lng);
+      // console.table(latlng.lat,latlng.lng);
       myMap[i] = new sqlData(
         feature.properties.NAME,
         feature.properties.AQI,
