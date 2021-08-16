@@ -1,3 +1,4 @@
+// NOTE:回调函数不能设为一个类
 // 图表初始化
 option = {
   legend: {
@@ -80,13 +81,14 @@ function chartSet(layer) {
 
 
 
+
 function resultBind(resultLayer,selecTime) {
   resultLayer
   .bindPopup(
     function (layer) {
       let city = layer.feature.properties.NAME;
       // let time=layer.feature.properties.DATE_USER;
-      time=timeTransfer(selecTime);
+      let time=timeTransfer(selecTime);
       // console.log(selecTime); //time
       // let data1 = cityData.get(city).HUMIDITY;
       // let data2 = cityData.get(city).RAINFALL;
@@ -105,23 +107,24 @@ function resultBind(resultLayer,selecTime) {
   .addTo(map);
 }
 
+
 // 查询结果解析
 function sqlResult(serviceResult) {
-  // console.log(serviceResult);
+  console.log(serviceResult);
 
   /*geoJSON数据解析*/
   resultLayer = L.geoJSON(serviceResult.result.features, {
     onEachFeature: (feature, layer) => {
       // if (feature.geometry.coordinates[0] > 10000) {
-        // let latlng = L.CRS.EPSG3857.unproject(
-        //   L.point(
-        //     feature.geometry.coordinates[0],
-        //     feature.geometry.coordinates[1]
-        //   )
-        // );
+      // let latlng = L.CRS.EPSG3857.unproject(
+      //   L.point(
+      //     feature.geometry.coordinates[0],
+      //     feature.geometry.coordinates[1]
+      //   )
+      // );
       //   latlng.alt = feature.geometry.coordinates[2];
-        //  marker = L.marker(latlng).addTo(map);
-        //  return latlng;
+      //  marker = L.marker(latlng).addTo(map);
+      //  return latlng;
       //   // marker.bindPopup(`<b>SMID:</b> ${feature.properties.SMID}`).openPopup().addTo(map)
       // } 
       //else {
@@ -134,29 +137,29 @@ function sqlResult(serviceResult) {
     },
     style: {
       
-        weight: 10,
-        color: "#fff",
-        opacity:0.5
+      weight: 10,
+      color: "#fff",
+      opacity: 0.5
       
     },
 
     coordsToLatLng: function (coords) {
       // console.log(L.point(coords[0], coords[1]));
       // FIXME: 3857坐标系单位为米 (数值较大) 4326坐标系单位为度 (经纬度坐标)
-      let latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+      let latlng = L.CRS.EPSG4326.unproject(L.point(coords[0], coords[1]));
       latlng.alt = coords[2];
-        console.log(latlng);
+      // console.log(latlng);
       return latlng;
     },
   });
   // 图表数据绑定
-  resultBind(resultLayer,gnl_infor_date);
-
-    // console.log(resultLayer);
+  resultBind(resultLayer,gnl_info_date);
 }
+    // console.log(resultLayer);
 
+class GnlInfoQuery{
 // SQL查询要素
-function sqlQuery(attributeFilter, datasetNames = [],toIndex=238) {
+ sqlQuery(attributeFilter="2021/4/30", datasetNames = [],toIndex=238) {
   // sql查询参数
   var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
     queryParameter: {
@@ -168,20 +171,22 @@ function sqlQuery(attributeFilter, datasetNames = [],toIndex=238) {
   });
   
   // sql查询服务
-  L.supermap.featureService(dataurl).getFeaturesBySQL(sqlParam, sqlResult);
+  L.supermap.featureService(dataurl).getFeaturesBySQL(sqlParam,sqlResult);
+}
 }
 
+let gnl_info = new GnlInfoQuery();
 // 默认展示第一天的天气信息地图
-sqlQuery(gnl_infor_date, ["ChinaClimate:weather"])
+gnl_info.sqlQuery(gnl_info_date, ["ChinaClimate:weather"])
 
 gnl_search.addEventListener('click', () => {
   layerRemove();
-  resultBind(resultLayer, gnl_infor_date);
-  // sqlQuery(gnl_infor_date, ["ChinaClimate:weather"]);
-  setTimeout(() => {
-    // var n =L.layerGroup(resultLayer)
-    // console.log(resultLayer);
-  }, 3000);
+  resultBind(resultLayer, gnl_info_date);
+  // sqlQuery(gnl_info_date, ["ChinaClimate:weather"]);
+  // setTimeout(() => {
+  //   var n =L.layerGroup(resultLayer)
+  //   console.log(n );
+  // }, 3000);
 });
 
 day_tp_heat_search.addEventListener('click',()=>{
@@ -190,17 +195,18 @@ day_tp_heat_search.addEventListener('click',()=>{
   tp_HeatMAP.addHeatMapLayer();
   tp_HeatMAP.heatMapLayer.addTo(map);
   tp_HeatMAP.markerGroup.addTo(map); 
-  // console.log(tp_HeatMAP);
+  console.log(tp_HeatMAP);
 })
 
 day_rain_isogram_search.addEventListener("click", () => {
   layerRemove();
-  rain_isogram.surfaceAnalystProcess("rainfall", rain_isogram_infor_date);
+  rain_isogram.surfaceAnalystProcess("rainfall", rain_isogram_info_date);
 });
 
 day_tp_isogram_search.addEventListener("click", () => {
   layerRemove();
-  tp_isogram.surfaceAnalystProcess("temperature", tp_isogram_infor_date);
+  tp_isogram.surfaceAnalystProcess("temperature", tp_isogram_info_date);
+  // tp_isogram.isogramlayer.addTo(map);
   setTimeout(() => {
     // tp_isogram.isogramlayer.addTo(map);
     console.log(tp_isogram);
@@ -208,12 +214,15 @@ day_tp_isogram_search.addEventListener("click", () => {
 });
 
 // let layer=L.layerGroup(heatMapLayer)
-// let baseMap = {
-//   chinaMapLayer: chinaMapLayer,
-// };
-// let overMap = {
-//   layer: layer,
-//   // heatMapLayer:heatMapLayer
-// };
-// L.control.layers(baseMap, overMap).addTo(map);
+let baseMap = {
+  "chinaMapLayer": chinaMapLayer,
+};
+let overMap = {
+  "heatMapLayer": tp_HeatMAP.heatMapLayer,
+  "markerGroup": tp_HeatMAP.markerGroup,
+};
+setTimeout(() => {
+  
+  L.control.layers(baseMap, overMap).addTo(map);
+}, 3000);
 // console.log(myMap)

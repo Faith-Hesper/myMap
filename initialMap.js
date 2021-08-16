@@ -1,6 +1,6 @@
 const host = window.isLocal ? window.server : "https://iserver.supermap.io";
-let map, chinaMapLayer,  resultLayer, surfaceAnalystService, surfaceAnalystParameters;
-// isogramlayer,heatMapLayer,
+let map, chinaMapLayer,surfaceAnalystService, surfaceAnalystParameters;
+// resultLayer,isogramlayer,heatMapLayer,
 let serviceUrl =
     "http://localhost:8090" + "/iserver/services/spatialAnalysis-China-3/restjsr/spatialanalyst";
   baseUrl = "http://localhost:8090" + "/iserver/services/map-China/rest/maps/China",
@@ -10,37 +10,37 @@ let serviceUrl =
 let myMap = [];
   // 各个城市每日天气信息
 let cityData = new Map();
-map = L.map("map", {
-  crs: L.CRS.EPSG3857,
-  center: [116, 60],
-  zoomSnap: 0.4,
-  zoomDelta: 0.4,
-  // maxZoom: 10,
-  // minZoom: 2,
-  zoom: 2,
-  preferCanvas: true,
-});
+// map = L.map("map", {
+//   crs: L.CRS.EPSG3857,
+//   center: [116, 60],
+//   zoomSnap: 0.4,
+//   zoomDelta: 0.4,
+//   // maxZoom: 10,
+//   // minZoom: 2,
+//   zoom: 2,
+//   preferCanvas: true,
+// });
 
 /*note: 软件
  */
 // fixme: L.Proj.CRS("EPSG:3857"
-// map = L.map("map", {
-//   crs: L.CRS.NonEarthCRS({
-//     bounds: L.bounds([-20037508.34 , -20037508.34], [20037508.34, 18418382.33]),
-//     origin: L.point(-20037508.34, 18418382.33),
-//   }),
-//   center: [4204077.121, 12289903.813],
-//   zoomSnap: 0.4,
-//   zoomDelta: 0.4,
-//   maxZoom: 10,
-//   minZoom: 2,
-//   zoom: 4,
-//   preferCanvas: true,
-// });
+map = L.map("map", {
+  crs: L.CRS.NonEarthCRS({
+    bounds: L.bounds([-20037508.34 , -20037508.34], [20037508.34, 18418382.33]),
+    origin: L.point(-20037508.34, 18418382.33),
+  }),
+  center: [4204077.121, 12289903.813],
+  zoomSnap: 0.4,
+  zoomDelta: 0.4,
+  maxZoom: 10,
+  minZoom: 2,
+  zoom: 4,
+  preferCanvas: true,
+});
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(map);
 
 // 地图加载
 chinaMapLayer = L.supermap
@@ -90,8 +90,6 @@ function layerRemove(params) {
     resultLayer.remove();
   }
   if (tp_HeatMAP.heatMapLayer != null) {
-    // tp_HeatMAP.heatMapLayer.remove()
-    // console.log(tp_HeatMAP.heatMapLayer);
     tp_HeatMAP.heatMapLayer.remove();
     tp_HeatMAP.markerGroup.remove();
   }
@@ -99,10 +97,10 @@ function layerRemove(params) {
   {
     rain_isogram.isogramlayer.remove();
   }
-  if(tp_isogram.isogramlayer!=null)
+  if(tp_isogram.isolayer!=null)
   {
     console.log(true);
-    tp_isogram.isogramlayer.remove();
+    tp_isogram.isolayer.remove();
   }
 }
 
@@ -186,7 +184,7 @@ function sql1Result(serviceResult) {
   /*geoJSON数据解析*/
   L.geoJSON(serviceResult.result.features, {
     onEachFeature: (feature, layer) => {
-      let latlng = L.CRS.EPSG3857.unproject(
+      let latlng = L.CRS.EPSG4326.unproject(
         L.point(feature.geometry.coordinates[0], feature.geometry.coordinates[1])
       );
       // console.table(latlng.lat,latlng.lng);
@@ -242,13 +240,13 @@ sql1Query(["ChinaClimate:weather"]);
 
 // 时间选择框
 function initDate(params) {
-  info = L.control({ position: "topleft" });
-  info.onAdd = function (params) {
-    this._div = L.DomUtil.create("div", "resultinfo");
-    info.update();
+  infoDate = L.control({ position: "topleft" });
+  infoDate.onAdd = function (params) {
+    this._div = L.DomUtil.create("div", "infoDate");
+    infoDate.update();
     return this._div;
   };
-  info.update = function (currentStatisticResult) {
+  infoDate.update = function (currentStatisticResult) {
     var dateSelectHtml = `<form action="" method="GET">
     <span>天气信息</span>
     <select id="wt_dateselect" class="form-control">
@@ -303,6 +301,6 @@ function initDate(params) {
 </form>`;
     this._div.innerHTML = dateSelectHtml;
   };
-  info.addTo(map);
+  infoDate.addTo(map);
 }
 initDate();

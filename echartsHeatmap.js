@@ -28,7 +28,7 @@ class HeatMap {
       "type": "FeatureCollection",
       "features": [],
     };
-    let index = timeTransfer(tp_heat_infor_date);
+    let index = timeTransfer(tp_heat_info_date);
     for (const [key, value] of cityData) {
       // console.log(value.lng,value.lat);
       let feature = {
@@ -46,7 +46,7 @@ class HeatMap {
       /* fixme: 热力图 marker X为经度 Y为维度
       */
       feature.geometry.coordinates = [parseFloat(value.lng), parseFloat(value.lat)];
-      console.log(key,feature.geometry.coordinates,value.TEMPERATURE[index]);
+      // console.log(key,feature.geometry.coordinates,value.TEMPERATURE[index]);
       let latlng = [value.lat, value.lng];
       // console.log(latlng);
       markers.push(
@@ -54,7 +54,7 @@ class HeatMap {
           `
       城市：${key}<br>
       气温：${value.TEMPERATURE[index]}°<br>
-      日期：${tp_heat_infor_date}`
+      日期：${tp_heat_info_date}`
         )
       );
 
@@ -62,7 +62,7 @@ class HeatMap {
     }
     this.markerGroup = L.layerGroup(markers);
     this.heatMapLayer.addFeatures(geojson);
-    this.heatMapLayer.addTo(map);
+    // this.heatMapLayer.addTo(map);
   }
 }
 let tp_HeatMAP = new HeatMap();
