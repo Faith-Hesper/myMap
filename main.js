@@ -146,7 +146,7 @@ function sqlResult(serviceResult) {
     coordsToLatLng: function (coords) {
       // console.log(L.point(coords[0], coords[1]));
       // FIXME: 3857坐标系单位为米 (数值较大) 4326坐标系单位为度 (经纬度坐标)
-      let latlng = L.CRS.EPSG4326.unproject(L.point(coords[0], coords[1]));
+      let latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
       latlng.alt = coords[2];
       // console.log(latlng);
       return latlng;

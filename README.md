@@ -35,3 +35,7 @@
 
 - git config --global core.editor "code --wait" 设置默认编辑器为 vscode
 - git config --global -e 使用 vscode 编辑全局配置文件
+- git config --global https.proxy 'http://127.0.0.1:8001'   
+- git config --global http.proxy 'http://127.0.0.1:8001'
+- git config --global socks.proxy "127.0.0.1:1080"
+

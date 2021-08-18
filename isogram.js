@@ -40,11 +40,11 @@ class Isogram {
         this.isogramlayer = L.geoJSON(result.recordset.features, {
           weight: 3,
           onEachFeature: (feature, layer) => {
-              L.polyline(feature.geometry.coordinates, {
-                color: "#7879b0",
-              })
-              .bindPopup(feature.properties.dZvalue)
-              .addTo(map);
+            // console.log(feature.geometry.coordinates);
+            let polyline = L.polyline(feature.geometry.coordinates, {
+              color: "#7879b0",
+            });
+            L.geoJSON(L.Util.transform(polyline, L.CRS.EPSG3857, L.CRS.EPSG4326)).addTo(map);
           },
           style: (feature) => {
           }

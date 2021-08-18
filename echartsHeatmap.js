@@ -46,9 +46,9 @@ class HeatMap {
       /* fixme: 热力图 marker X为经度 Y为维度
       */
       feature.geometry.coordinates = [parseFloat(value.lng), parseFloat(value.lat)];
-      // console.log(key,feature.geometry.coordinates,value.TEMPERATURE[index]);
+      console.log(key,feature.geometry.coordinates,value.TEMPERATURE[index]);
       let latlng = [value.lat, value.lng];
-      // console.log(latlng);
+      console.log(latlng);
       markers.push(
         L.marker(latlng).bindPopup(
           `
