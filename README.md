@@ -28,6 +28,13 @@
 - git log commits 历史
 - git restore
 - git restore --staged document1.txt 撤销 git add :smile: document1.txt
+- echo "# fe" >> README.md
+- git init
+- git add README.md
+- git commit -m "first commit"
+- git branch -M main
+- git remote add origin https://github.com/Faith-Hesper/fe.git
+- git push -u origin main
 
 ---
 
