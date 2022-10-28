@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>气候专题图</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"></script>
+    <!-- <script type="text/javascript" include="papaparse,jquery" src="js/include-web.js"></script> -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/customIcon.js"></script>
+    <!-- PapaParse -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/PapaParse/5.3.1/papaparse.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js">
+    </script>
+</head>
+
+<body>
+    <div class="climate">
+        <div class="title">
+            <h1>全国气候专题图</h1>
+        </div>
+        <div id="map"></div>
+        <div class="toolbar">
+            <div id="timebar">
+            </div>
+        </div>
+        <div class="draw">
+            <div class="title">
+                地图量算
+            </div>
+            <div class="tool">
+                <div class="tool-btn polyline">
+                    距离量测</div>
+                <div class="tool-btn polygon">面积量测</div>
+                <div class="tool-btn clear clear-disable">清除</div>
+            </div>
+        </div>
+        <div class="tableContainer">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>城市</th>
+                    <th>温度</th>
+                    <th>湿度</th>
+                    <th>AQI</th>
+                    <th>PM2.5</th>
+                    <th>天气</th>
+                    <th>降雨量</th>
+                </tr>
+            </table>
+            <div class="no-content">
+                <span>No content</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<!-- <script type="text/javascript" include="echarts" src="dist/leaflet/include-leaflet.js"></script> -->
+<script src="js/draw.js"></script>
+<script src="js/message.js"></script>
+<script src="js/initialMap.js"></script>
+<script src="js/dateSelect.js"></script>
+<script src="js/echartsHeatmap.js"></script>
+<script src="js/isogram.js"></script>
+<script src="js/main.js"></script>
