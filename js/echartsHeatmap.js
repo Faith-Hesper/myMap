@@ -2,7 +2,7 @@
  * @Author: Faith
  * @Date: 2021-09-10 21:22
  * @LastAuthor: Faith
- * @LastEditTime: 2022-10-30 10:01
+ * @LastEditTime: 2022-10-30 14:59
  * @Description:
  */
 /**
@@ -16,15 +16,15 @@ class HeatMap {
     this.addHeatMapLayer()
   }
   addHeatMapLayer() {
-    this.heatMapLayer = L.supermap.heatMapLayer('heatMap', {
-      id: 'heatmap',
+    this.heatMapLayer = L.supermap.heatMapLayer("heatMap", {
+      id: "heatmap",
       map: map,
       radius: 80,
       alwaysMapCRS: false,
       // useGeoUnit:true,
-      colors: ['blue', 'cyan', 'lime', 'yellow', 'red'],
+      colors: ["blue", "cyan", "lime", "yellow", "red"],
       opacity: 0.8,
-      featureWeight: 'TEMPERATURE',
+      featureWeight: "TEMPERATURE",
       loadWhileAnimating: false,
     })
     // this.layer.addLayer(this.heatMapLayer)
@@ -39,7 +39,8 @@ class HeatMap {
   }
   async getData() {
     this.removeLayer()
-    let serviceResult = await queryBySql(tp_heat_info_date, ['ChinaClimate:weather'])
+    const attributeFilter = "date_User='" + tp_heat_info_date + " 0:00:00'"
+    let serviceResult = await queryBySql(attributeFilter, ["ChinaClimate:weather"])
     this.markerGroup = sqlResult(serviceResult)
     // console.log(layer)
     this.heatMapLayer.addFeatures(this.markerGroup.toGeoJSON())

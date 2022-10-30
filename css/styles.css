@@ -131,3 +131,7 @@ p{
   border-color: #F5212D !important;
   cursor: pointer;
 }
+.img-icon{
+  width: 100%;
+  height: 100%;
+}
