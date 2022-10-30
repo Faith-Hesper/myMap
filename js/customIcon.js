@@ -2,7 +2,7 @@
  * @Author: Faith
  * @Date: 2022-10-28 14:42
  * @LastAuthor: Faith
- * @LastEditTime: 2022-10-28 14:42
+ * @LastEditTime: 2022-10-28 16:40
  * @Description:
  */
 
@@ -31,5 +31,5 @@ const windy = new customIcon({
   iconUrl: './assets/weatherwindy.svg',
 })
 const sink = new customIcon({
-  iconUrl: './assets/weather_wu.svg',
+  iconUrl: './assets/weather_fuchen.svg',
 })

@@ -63,6 +63,9 @@ let baseMap = {
 }
 
 const control = L.control.layers(baseMap).addTo(map)
+control.options = {
+  collapsed: false,
+}
 
 // 图层替换
 function layerRemove(params) {

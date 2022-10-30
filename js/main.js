@@ -37,7 +37,7 @@ function featureBind(feature, layer) {
       e.sourceTarget.openPopup()
     })
     .on('mouseout', (e) => e.sourceTarget.closePopup())
-    .on('click', (e) => map.flyTo(e.latlng))
+    .on('click', (e) => map.flyTo(e.latlng, 7))
 }
 
 // 查询结果解析
@@ -118,32 +118,39 @@ let rain_isogram = new Isogram('rainfall')
 let tp_isogram = new Isogram('temperature')
 
 // 默认展示第一天的天气信息地图
-gnl_info.sqlQuery(gnl_info_date, ['ChinaClimate:weather'])
+gnl_info.sqlQuery(gnl_info_date, ['ChinaClimate:weather']).then((layer) => {
+  control.addOverlay(layer, gnl_info_date + '天气信息')
+  messageBox('查询成功')
+})
 
 gnl_search.addEventListener('click', () => {
-  layerRemove()
+  // layerRemove()
   gnl_info.sqlQuery(gnl_info_date, ['ChinaClimate:weather']).then((layer) => {
-    control.addOverlay(layer, '天气信息')
+    control.addOverlay(layer, gnl_info_date + '天气信息')
     messageBox('查询成功')
   })
 })
 
 day_tp_heat_search.addEventListener('click', () => {
-  layerRemove()
+  // layerRemove()
   tp_HeatMAP.getData().then((layer) => {
-    // control.addOverlay(layer, '热力图')
+    control.addOverlay(layer, '热力图')
     messageBox('查询成功')
   })
 })
 
 day_rain_isogram_search.addEventListener('click', () => {
-  layerRemove()
+  // layerRemove()
   messageBox('查询中')
-  rain_isogram.surfaceAnalystProcess(rain_isogram_info_date)
+  rain_isogram.surfaceAnalystProcess(rain_isogram_info_date).then((layer) => {
+    control.addOverlay(layer, rain_isogram_info_date + '降雨量等值线图')
+  })
 })
 
 day_tp_isogram_search.addEventListener('click', () => {
-  layerRemove()
+  // layerRemove()
   messageBox('查询中')
-  tp_isogram.surfaceAnalystProcess(tp_isogram_info_date)
+  tp_isogram.surfaceAnalystProcess(tp_isogram_info_date).then((layer) => {
+    control.addOverlay(layer, tp_isogram_info_date + '温度等值线图')
+  })
 })
