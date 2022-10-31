@@ -2,8 +2,20 @@
  * @Author: Faith
  * @Date: 2022-10-28 14:42
  * @LastAuthor: Faith
- * @LastEditTime: 2022-10-30 22:54
+ * @LastEditTime: 2022-10-31 11:28
  * @Description:
+ */
+/*
+ *                   江城子 . 程序员之歌
+ *
+ *               十年生死两茫茫，写程序，到天亮。
+ *                   千行代码，Bug何处藏。
+ *               纵使上线又怎样，朝令改，夕断肠。
+ *
+ *               领导每天新想法，天天改，日日忙。
+ *                   相顾无言，惟有泪千行。
+ *               每晚灯火阑珊处，夜难寐，加班狂。
+ *
  */
 
 const customIcon = L.Icon.extend({
@@ -11,7 +23,7 @@ const customIcon = L.Icon.extend({
     iconUrl: "./assets/weather.svg",
     iconAnchor: [20, 10],
     iconSize: [40, 40],
-    html: "",
+    html: "22",
   },
   initialize: function (options) {
     options = L.Util.setOptions(this, options)
@@ -26,7 +38,10 @@ const customIcon = L.Icon.extend({
   },
   _setIcon: function () {
     let options = this.options
-    return `<img class="img-icon" src="${options.iconUrl}">`
+    return `
+    <div class = "weather"><img class="img-icon" src="${options.iconUrl}"></div>
+    <div class = "temprature">${options.html}℃</div>
+    `
   },
   _setIconStyle: function (div) {
     let options = this.options
@@ -42,6 +57,15 @@ const customIcon = L.Icon.extend({
     div.style.height = iconSize.y + "px"
   },
 })
+
+const defaultIconUrl = "./assets/weather.svg"
+const sunIconUrl = "./assets/weather_qing.svg"
+const rainIconUrl = "./assets/weather_zhongyu.svg"
+const yunIconUrl = "./assets/weather.svg"
+const fogIconUrl = "./assets/weather-fog.svg"
+const windyIconUrl = "./assets/weatherwindy.svg"
+const sinkIconUrl = "./assets/weather_fuchen.svg"
+
 const defaultIcon = new customIcon({
   iconUrl: "./assets/weather.svg",
 })

@@ -1,20 +1,25 @@
+L.weatherMarker = function (point, options) {
+  let icon = new customIcon(options)
+  return L.marker(point, { icon: icon })
+}
 // icon
 function weaherIcon(point, latlng) {
+  let temperature = point.properties.TEMPERATURE
   let temp = point.properties.WEATHER
   if (temp.indexOf("晴") !== -1) {
-    return L.marker(latlng, { icon: sun })
+    return L.weatherMarker(latlng, { iconUrl: sunIconUrl, html: temperature })
   } else if (temp.indexOf("雨") !== -1) {
-    return L.marker(latlng, { icon: rain })
+    return L.weatherMarker(latlng, { iconUrl: rainIconUrl, html: temperature })
   } else if (temp.indexOf("云") !== -1) {
-    return L.marker(latlng, { icon: yun })
+    return L.weatherMarker(latlng, { iconUrl: yunIconUrl, html: temperature })
   } else if (temp.indexOf("浮") !== -1) {
-    return L.marker(latlng, { icon: sink })
+    return L.weatherMarker(latlng, { iconUrl: sinkIconUrl, html: temperature })
   } else if (temp.indexOf("风") !== -1) {
-    return L.marker(latlng, { icon: windy })
+    return L.weatherMarker(latlng, { iconUrl: windyIconUrl, html: temperature })
   } else if (temp.indexOf("雾") !== -1) {
-    return L.marker(latlng, { icon: fog })
+    return L.weatherMarker(latlng, { iconUrl: fogIconUrl, html: temperature })
   } else {
-    return L.marker(latlng, { icon: defaultIcon })
+    return L.weatherMarker(latlng, { iconUrl: defaultIconUrl, html: temperature })
   }
 }
 
@@ -60,7 +65,11 @@ function sqlResult(serviceResult) {
 }
 
 // sql查询
-async function queryBySql(attributeFilter, datasetNames, toIndex = 238) {
+async function queryBySql(
+  attributeFilter,
+  datasetNames,
+  { resultFormat = L.supermap.DataFormat.GEOJSON, toIndex = 238 }
+) {
   let param = {
     queryParameter: {
       name: "",
@@ -75,9 +84,13 @@ async function queryBySql(attributeFilter, datasetNames, toIndex = 238) {
   const sqlParam = new SuperMap.GetFeaturesBySQLParameters(param)
 
   return await new Promise(resolve => {
-    L.supermap.featureService(dataurl).getFeaturesBySQL(sqlParam, serviceResult => {
-      resolve(serviceResult)
-    })
+    L.supermap.featureService(dataurl).getFeaturesBySQL(
+      sqlParam,
+      serviceResult => {
+        resolve(serviceResult)
+      },
+      resultFormat
+    )
   })
 }
 let themeLayer
@@ -112,71 +125,61 @@ function initThemeLayer() {
       start: 10,
       end: 15,
       style: {
-        color: "#eddda3",
+        color: "#c4e21c",
       },
     },
     {
       start: 15,
       end: 20,
       style: {
-        color: "#f0c98a",
+        color: "#75c425",
       },
     },
     {
       start: 20,
       end: 25,
       style: {
-        color: "#f3b478",
+        color: "#2da83d",
       },
     },
     {
       start: 25,
       end: 30,
       style: {
-        color: "#f98766",
+        color: "#e3ca2d",
       },
     },
     {
       start: 30,
+      end: 35,
+      style: {
+        color: "#f39f6c",
+      },
+    },
+    {
+      start: 35,
       end: 40,
       style: {
-        color: "#f67166",
+        color: "#d05265",
       },
     },
   ]
 
-  // themeLayer.on('mousemove', highLightLayer);
+  // themeLayer.on("mousemove", e => {
+  //   console.log(e)
+  // })
+  control.addOverlay(themeLayer, "矢量地图")
   // addThemeFeatures();
 }
 initThemeLayer()
 
-async function sql(attributeFilter, datasetNames, toIndex = 238) {
-  let param = {
-    queryParameter: {
-      name: "",
-      attributeFilter: attributeFilter,
-    },
-    datasetNames: datasetNames,
-    toIndex: toIndex,
-  }
-
-  Object.assign(param, ...arguments)
-
-  const sqlParam = new SuperMap.GetFeaturesBySQLParameters(param)
-
-  return await new Promise(resolve => {
-    L.supermap.featureService(dataurl).getFeaturesBySQL(
-      sqlParam,
-      serviceResult => {
-        resolve(serviceResult)
-      },
-      L.supermap.DataFormat.ISERVER
-    )
-  })
-}
-// sql("", ["ChinaClimate:China_Province_pg"]).then(resultLayer => {
+// queryBySql("", ["ChinaClimate:China_Province_pg"], {
+//   resultFormat: L.supermap.DataFormat.ISERVER,
+// }).then(resultLayer => {
 //   console.log(resultLayer.result.features)
-//   themeLayer.addFeatures(resultLayer.result.features)
+//   setTimeout(() => {
+//     themeLayer.addFeatures(resultLayer.result.features)
+//   }, 2000)
 // })
 
 class GnlInfoQuery {
